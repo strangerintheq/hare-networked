@@ -4,17 +4,14 @@ import {SocketProvider} from "react-socket-io-hooks";
 import {Ground} from "./Ground";
 import {Players} from "./Players";
 import {Atmosphere} from "./Atmosphere";
+import {useSocket} from "./useSocket";
 
 export const App = () => {
 
-    const reducer = (state) => {
-        console.log(state)
-    }
+    useSocket()
 
-    //@ts-ignore
-    return <SocketProvider uri="http://localhost"
-                           reducer={reducer}
-                           initialState={{}}>
+
+    return <>
 
         <Canvas orthographic
                 camera={{zoom: 55}}
@@ -26,5 +23,5 @@ export const App = () => {
 
         </Canvas>
 
-    </SocketProvider>
+    </>
 };

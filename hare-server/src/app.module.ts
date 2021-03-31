@@ -2,14 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { AppGateway } from "./app.gateway";
+
+let staticModule = ServeStaticModule.forRoot({
+  rootPath: '../hare-client/build',
+});
 
 @Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: '../hare-client/build',
-    })
-  ],
+  imports: [staticModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}
