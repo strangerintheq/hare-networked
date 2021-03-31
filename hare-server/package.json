@@ -22,7 +22,8 @@
     "@types/socket.io": "^2.1.13",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "simplex-noise": "^2.4.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^7.3.0",
