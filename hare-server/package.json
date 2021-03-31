@@ -1,0 +1,36 @@
+{
+  "name": "hare-server",
+  "version": "0.0.1",
+  "description": "hare server",
+  "author": "strangerintheq",
+  "private": true,
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main"
+  },
+  "dependencies": {
+    "@nestjs/common": "^7.6.15",
+    "@nestjs/core": "^7.6.15",
+    "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/platform-socket.io": "^7.6.15",
+    "@nestjs/serve-static": "^2.1.4",
+    "@nestjs/websockets": "^7.6.15",
+    "@types/socket.io": "^2.1.13",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^6.6.6"
+  },
+  "devDependencies": {
+    "@nestjs/schematics": "^7.3.0",
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.36",
+    "ts-loader": "^8.0.18",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.2.3"
+  }
+}

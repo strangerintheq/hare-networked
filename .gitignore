@@ -1,0 +1,9 @@
+hare-server/dist
+hare-client/build/index.js
+.idea
+**/node_modules/
+*.js
+*.jsx
+*.d.ts
+*.d.tsx
+*.js.map
