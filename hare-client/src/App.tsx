@@ -1,45 +1,46 @@
-import React, {useEffect, useState} from 'react';
-import {Canvas} from "react-three-fiber";
+import React, {useState} from 'react';
+import {Canvas, useFrame} from "react-three-fiber";
 import {Ground} from "./Ground";
 import {Players} from "./Players";
 import {Atmosphere} from "./Atmosphere";
-import {useSocket} from "./hooks/useSocket";
 import {Cell} from "../../hare-server/src/data/Cell";
+import {Player} from "../../hare-server/src/data/Player";
+import {ServerEvent} from "../../hare-server/src/data/ServerEvent";
+import {useServerEvent} from "./Socket";
 
 export const App = () => {
 
-    useSocket()
+    const [players, setPlayers] = useState<Player[]>([]);
+    const [cells, setCells] = useState<Cell[]>([]);
 
-    const [cells, setCells] = useState<Cell[]>(null);
+    useServerEvent(ServerEvent.PLAYER_CONNECTED, (player: Player) => {
+        player.t = Date.now();
+        setPlayers([...players, player]);
+    });
 
-    useEffect(() => {
+    useServerEvent(ServerEvent.PLAYER_DISCONNECTED, (id: string) => {
+        console.log('PLAYER_DISCONNECTED', id)
+        setPlayers(players.filter(p => p.id !== id));
+    });
 
-        const set = (result) => {
-            setCells(result.flat().map(c => {
-                let cell = new Cell(c.x, c.y, c.sx, c.sy);
-                cell.height = c.height;
-                return cell;
-            }))
-        }
+    useServerEvent(ServerEvent.ENTER_SECTOR, ({sector, players}) => {
+        setCells(sector.flat().map(c => {
+            let cell = new Cell(c.x,c.y,c.sx,c.sy);
+            cell.height = c.height
+            return cell;
+        }))
+        let d = Date.now();
+        setPlayers(players.map(p => {
+            p.t = d;
+            return p
+        }));
+    });
 
-        const err = (error) => console.error(error)
-
-        fetch("/sector")
-            .then(res => res.json())
-            .then(set, err);
-    }, [])
-
-    return <>
-
-        <Canvas orthographic
+    return <Canvas orthographic
                 camera={{zoom: 50, position:[15,15,15]}}
                 style={{height:'100vh', width:'100vw'}}>
-
-            <Ground cells={cells}/>
-            <Players />
-            <Atmosphere/>
-
-        </Canvas>
-
-    </>
+        <Atmosphere/>
+        <Ground cells={cells} />
+        <Players players={players}/>
+    </Canvas>
 };

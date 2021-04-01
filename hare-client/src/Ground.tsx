@@ -1,6 +1,10 @@
 import React from 'react';
 import {Cell} from "../../hare-server/src/data/Cell";
 import {Cube} from "./Cube";
+import {MouseEvent} from "react-three-fiber/canvas";
+
+import {ClientEvent} from "../../hare-server/src/data/ClientEvent";
+import {sendClientEvent} from "./Socket";
 
 function hsl(h,s,l){
     return `hsl(${h},${s}%,${l}%)`
@@ -18,29 +22,48 @@ export const gold = hsl(50, 70, 60);
 export const red = hsl(0, 100, 50);
 export const orange = hsl(25, 100, 50);
 
-const CellBase = (props:{cell:Cell}) => {
+type CellBaseParams = {
+    cell: Cell,
+    onClick?: (cell: MouseEvent) => void
+};
+
+const CellBase = (props:CellBaseParams) => {
     return <>
-        <Cube col={brown1} size={[1,0.9,1]} position={[0,-0.1,0]}/>
-        <Cube col={green} size={[1,0.1,1]} position={[0,0.4,0]}/>
+
+        <Cube col={brown1}
+              size={[1,0.9,1]}
+              position={[0,-0.1,0]}/>
+
+        <Cube col={green}
+              size={[1,0.1,1]}
+              position={[0,0.4,0]}
+              onClick={props.onClick}/>
+
     </>;
 };
 
-const CellObject = (props:{cell:Cell, key:any}) => {
+type CellObjectParams = {
+    cell: Cell,
+    key: any
+};
+
+const CellObject = (props:CellObjectParams) => {
     let cell = props.cell;
-    let hs = (Cell.sectorSize-1)/2
     return <>
-        <group position={[cell.x - hs, cell.height, cell.y - hs]}>
-            <CellBase cell={props.cell}/>
+        <group position={[cell.x, cell.height, cell.y]}>
+            <CellBase cell={props.cell} onClick={() => {
+                sendClientEvent(ClientEvent.CLICK_ON_CELL, cell)
+            }}/>
         </group>
     </>;
 };
 
 type GroundParams = {
-    cells: Cell[]
+    cells: Cell[],
 };
 
 export const Ground = (props:GroundParams) => {
     return <>
-        {props.cells.map(c => <CellObject cell={c} key={c.getId()}/>)}
+        {props.cells.map(c => <CellObject cell={c} key={c.getId()} />)}
     </>;
 };

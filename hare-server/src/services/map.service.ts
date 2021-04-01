@@ -1,10 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import * as SimplexNoise from 'simplex-noise'
-import {Cell} from "./data/Cell";
-import {CellType} from "./data/CellType";
-import {CellObjectType} from "./data/CellObjectType";
-
-
+import {Cell} from "../data/Cell";
+import {CellType} from "../data/CellType";
+import {CellObjectType} from "../data/CellObjectType";
 
 @Injectable()
 export class MapService {
@@ -14,9 +12,11 @@ export class MapService {
     noises = new Map<string, SimplexNoise>();
 
     getSector(sx: number, sy: number): Cell[][] {
-        return Array(Cell.sectorSize).fill(0).map((_, x: number) => {
-            return Array(Cell.sectorSize).fill(0).map((_, y) => {
-                return this.getCell(x,y,sx,sy);
+        let s = Cell.sectorSize;
+        let hs = (s - 1)/2
+        return Array(s).fill(0).map((_, x: number) => {
+            return Array(s).fill(0).map((_, y: number) => {
+                return this.getCell(x - hs,y - hs, sx, sy);
             });
         });
     }

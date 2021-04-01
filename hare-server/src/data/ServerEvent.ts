@@ -1,0 +1,7 @@
+// from server to client
+export enum ServerEvent {
+    PLAYER_CONNECTED = 'PLAYER_CONNECTED',
+    PLAYER_DISCONNECTED = 'PLAYER_DISCONNECTED',
+    ENTER_SECTOR = "ENTER_SECTOR",
+    PLAYER_MOVED = "PLAYER_MOVED",
+}

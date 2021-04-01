@@ -1,35 +1,61 @@
 import {
     SubscribeMessage,
     WebSocketGateway,
-    OnGatewayInit,
     WebSocketServer,
-    OnGatewayConnection,
     OnGatewayDisconnect,
 } from '@nestjs/websockets';
 
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
+import {MapService} from "./services/map.service";
+import {PlayersService} from "./services/players.service";
+import {ServerEvent} from "./data/ServerEvent";
+import {ClientEvent} from "./data/ClientEvent";
+import {Cell} from "./data/Cell";
 
 @WebSocketGateway()
-export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class AppGateway implements OnGatewayDisconnect {
 
-    @WebSocketServer() server: Server;
+    @WebSocketServer()
+    server: Server;
+
     private logger: Logger = new Logger('AppGateway');
 
-    @SubscribeMessage('join')
-    handleMessage(client: Socket, payload: string): void {
-        this.server.emit('join', payload);
-    }
-
-    afterInit(server: Server) {
-        this.logger.log('Init');
-    }
+    constructor(
+        readonly mapService: MapService,
+        readonly playersService: PlayersService
+    ) {}
 
     handleDisconnect(client: Socket) {
         this.logger.log(`Client disconnected: ${client.id}`);
+        const id = this.playersService.playerDisconnected(client.id);
+        this.server.emit(ServerEvent.PLAYER_DISCONNECTED, id);
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
-        this.logger.log(`Client connected: ${client.id}`);
+    @SubscribeMessage(ClientEvent.JOIN)
+    joinMsg(client: Socket, id: string): void {
+        this.logger.log(`joinMsg: ${client.id} ${id}`);
+        const player = this.playersService.playerConnected(id, client.id)
+        const sector = this.mapService.getSector(0, 0);
+        const players = this.playersService.getPlayersInSector(0, 0);
+        client.emit(ServerEvent.ENTER_SECTOR, {sector, players})
+        client.broadcast.emit(ServerEvent.PLAYER_CONNECTED, player);
+    }
+
+    @SubscribeMessage(ClientEvent.CLICK_ON_CELL)
+    clickOnCell(client: Socket, cell: Cell): void {
+        this.logger.log(`clickOnCell: ${client.id} ${cell}`);
+        const player = this.playersService.getPlayerByWsId(client.id);
+        player.x0 = player.x1;
+        player.y0 = player.y1;
+        player.x1 -= Math.sign(player.x1 - cell.x);
+        player.y1 -= Math.sign(player.y1 - cell.y);
+        this.server.emit(ServerEvent.PLAYER_MOVED, player)
+    }
+
+    @SubscribeMessage(ClientEvent.INVOKE_CELL_ACTION)
+    invokeCellAction(client: Socket, cell: Cell): void {
+        this.logger.log('invokeCellAction');
+        this.logger.log(cell)
     }
 }

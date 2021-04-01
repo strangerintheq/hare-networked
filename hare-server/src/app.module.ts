@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { MapService } from './map.service';
+
+import { MapService } from './services/map.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppGateway } from "./app.gateway";
+import {PlayersService} from "./services/players.service";
 
 let staticModule = ServeStaticModule.forRoot({
   rootPath: '../hare-client/build',
@@ -10,7 +11,6 @@ let staticModule = ServeStaticModule.forRoot({
 
 @Module({
   imports: [staticModule],
-  controllers: [AppController],
-  providers: [MapService, AppGateway],
+  providers: [MapService, PlayersService, AppGateway],
 })
 export class AppModule {}
