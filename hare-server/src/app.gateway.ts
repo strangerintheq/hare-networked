@@ -48,23 +48,13 @@ export class AppGateway implements OnGatewayDisconnect {
         const player = this.playersService.getPlayerByWsId(client.id);
         player.x0 = player.x1;
         player.y0 = player.y1;
-        let dx = Math.sign(player.x1 - cell.x);
-        let dy = Math.sign(player.y1 - cell.y);
+        const dx = Math.sign(player.x1 - cell.x);
+        const dy = Math.sign(player.y1 - cell.y);
         player.x1 -= dx;
         player.y1 -= dy;
-
-        // let x = hare.obj.position.x - dx;
-        // let z = hare.obj.position.z - dz;
-        // let loc = [x, 0, z];
-        // let nextCell = getCell(loc);
-        // let w = isWater(nextCell);
-        // let y = cellElevation(nextCell) * (w ? -1 : 1) + (w ? 0.55 : 1);
-
-        if (dx * dx + dy * dy !== 0) {
-            player.a0 = player.a1;
+        player.a0 = player.a1;
+        if (dx * dx + dy * dy !== 0)
             player.a1 = Math.atan2(-dx, -dy);
-        }
-
         this.server.emit(ServerEvent.PLAYER_MOVED, player)
     }
 

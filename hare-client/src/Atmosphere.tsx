@@ -1,7 +1,7 @@
 import * as React from "react";
 import {CanvasContext, useFrame} from "react-three-fiber";
 import {useRef} from "react";
-import {Cube} from "./objects/Cube";
+import {Cube} from "./world/Cube";
 
 export const Atmosphere = () => {
 

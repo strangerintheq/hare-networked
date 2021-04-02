@@ -1,5 +1,5 @@
 import React from 'react';
-import {Cube} from "./Cube";
+import {Cube} from "../Cube";
 
 export const Hare = () => {
     return <>

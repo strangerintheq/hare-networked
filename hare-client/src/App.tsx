@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Canvas} from "react-three-fiber";
-import {Ground} from "./Ground";
+import {World} from "./world/World";
 import {PlayerObj} from "./PlayerObj";
 import {Atmosphere} from "./Atmosphere";
 import {Cell} from "../../hare-server/src/data/Cell";
@@ -20,9 +20,7 @@ export const App = () => {
     }, [players]);
 
     useServerEvent(ServerEvent.PLAYER_DISCONNECTED, (id) => {
-        let filter = players.filter(p => p.id !== id);
-        console.log(filter)
-        return setPlayers(filter);
+        setPlayers(players.filter(p => p.id !== id));
     }, [players]);
 
     useServerEvent(ServerEvent.ENTER_SECTOR, ({sector, players}) => {
@@ -31,27 +29,28 @@ export const App = () => {
             cell.height = c.height
             return cell;
         }))
-        let d = Date.now();
+        const d = Date.now()-1000;
         setPlayers(players.map(p => {
             p.t = d;
             return p
         }));
     });
 
+    const onClick = (e) => {
+        e.stopPropagation();
+        const p = e.object.parent.position;
+        sendClientEvent(ClientEvent.CLICK_ON_CELL, {x: p.x, y: p.z})
+    };
+
     return <Canvas orthographic
                    colorManagement
                    shadowMap
                    camera={{zoom: 50, position: [15, 15, 15]}}
                    style={{height: '100vh', width: '100vw'}}>
+
         <Atmosphere/>
-        <Ground cells={cells} onClick={(e) => {
-            e.stopPropagation();
-            let p = e.object.parent.position;
-            //  console.log(p.x, p.z)
-            sendClientEvent(ClientEvent.CLICK_ON_CELL, {x: p.x, y: p.z})
-        }}/>
-        <>
-            {players.map(p => <PlayerObj key={p.id} p={p} />)}
-        </>
+        <World cells={cells} onClick={onClick}/>
+        {players.map(p => <PlayerObj key={p.id} p={p} />)}
+
     </Canvas>
 };
