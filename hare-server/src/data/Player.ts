@@ -1,14 +1,15 @@
 export class Player {
-    id: string;
     wsId: string;
+    id: string;
+    t: number;
 
     x0: number;
+    h0: number;
     y0: number;
     a0: number;
 
     x1: number;
+    h1: number;
     y1: number;
     a1: number;
-
-    t: number;
 }

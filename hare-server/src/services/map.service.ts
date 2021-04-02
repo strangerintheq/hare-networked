@@ -22,12 +22,8 @@ export class MapService {
     }
 
     private getCell(x: number, y: number, sx: number, sy: number): Cell {
-        let cell = new Cell(x, y, sx, sy);
-        cell.height = this.noise('terrain1', x / 40, y / 40) * 0.8;
-        cell.height += this.noise('terrain2', x / 10, y / 10) * 0.2;
-        cell.height = Math.floor(cell.height * 10) / 10
-        if (cell.height < 0)
-            cell.height -= 0.15
+        const cell = new Cell(x, y, sx, sy);
+        cell.height = this.getCellHeight(cell);
         cell.type = this.getCellTypeByHeight(cell.height);
         cell.object = this.getCellObject(cell)
         return cell
@@ -56,5 +52,13 @@ export class MapService {
         if (!this.noises.has(key))
             this.noises.set(key, new SimplexNoise(this.seed + key))
         return this.noises.get(key).noise2D(x, y)
+    }
+
+    getCellHeight(c: Cell) {
+        let h = this.noise('terrain1', c.x / 40, c.y / 40) * 0.8;
+        h += this.noise('terrain2', c.x / 10, c.y / 10) * 0.2;
+        h = Math.floor(h * 10) / 10
+        if (h < 0) h -= 0.15
+        return h;
     }
 }

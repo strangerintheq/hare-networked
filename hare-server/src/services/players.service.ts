@@ -1,5 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {Player} from "../data/Player";
+import {Cell} from "../data/Cell";
 
 @Injectable()
 export class PlayersService {
@@ -41,5 +42,21 @@ export class PlayersService {
 
     getPlayerByWsId(wsId: string) : Player{
         return this.connectedPlayers.get(wsId)
+    }
+
+    calcMove(player: Player, cell: Cell) {
+        player.x0 = player.x1;
+        const dx = Math.sign(player.x1 - cell.x);
+        player.x1 -= dx;
+
+        player.y0 = player.y1;
+        const dy = Math.sign(player.y1 - cell.y);
+        player.y1 -= dy;
+
+        player.a0 = player.a1;
+        if (dx * dx + dy * dy !== 0)
+            player.a1 = Math.atan2(-dx, -dy);
+
+        player.h0 = player.h1;
     }
 }

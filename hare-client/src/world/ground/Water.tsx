@@ -4,6 +4,6 @@ import {blue1} from "../Palette";
 
 export const Water = () => {
     return <>
-        <Cube col={blue1} />
+        <Cube col={blue1}  noCastShadow={true}/>
     </>
 }

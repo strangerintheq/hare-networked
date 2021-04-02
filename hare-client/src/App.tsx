@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Canvas} from "react-three-fiber";
 import {World} from "./world/World";
 import {PlayerObj} from "./PlayerObj";
-import {Atmosphere} from "./Atmosphere";
+import {Atmosphere} from "./world/Atmosphere";
 import {Cell} from "../../hare-server/src/data/Cell";
 import {Player} from "../../hare-server/src/data/Player";
 import {ServerEvent} from "../../hare-server/src/data/ServerEvent";
 import {sendClientEvent, useServerEvent} from "./Socket";
 import {ClientEvent} from "../../hare-server/dist/data/ClientEvent";
+import {Background} from "./Background";
 
 export const App = () => {
 
@@ -27,6 +28,8 @@ export const App = () => {
         setCells(sector.flat().map(c => {
             let cell = new Cell(c.x, c.y, c.sx, c.sy);
             cell.height = c.height
+            cell.type = c.type
+            cell.object = c.object;
             return cell;
         }))
         const d = Date.now()-1000;
@@ -48,6 +51,8 @@ export const App = () => {
                    camera={{zoom: 50, position: [15, 15, 15]}}
                    style={{height: '100vh', width: '100vw'}}>
 
+
+        <Background />
         <Atmosphere/>
         <World cells={cells} onClick={onClick}/>
         {players.map(p => <PlayerObj key={p.id} p={p} />)}

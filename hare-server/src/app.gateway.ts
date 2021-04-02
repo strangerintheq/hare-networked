@@ -27,14 +27,14 @@ export class AppGateway implements OnGatewayDisconnect {
     ) {}
 
     handleDisconnect(client: Socket) {
-        this.logger.log(`Client disconnected: ${client.id}`);
+        //this.logger.log(`Client disconnected: ${client.id}`);
         const id = this.playersService.playerDisconnected(client.id);
         this.server.emit(ServerEvent.PLAYER_DISCONNECTED, id);
     }
 
     @SubscribeMessage(ClientEvent.JOIN)
     joinMsg(client: Socket, id: string): void {
-        this.logger.log(`joinMsg: ${client.id} ${id}`);
+        //this.logger.log(`joinMsg: ${client.id} ${id}`);
         const player = this.playersService.playerConnected(id, client.id)
         const sector = this.mapService.getSector(0, 0);
         const players = this.playersService.getPlayersInSector(0, 0);
@@ -44,17 +44,10 @@ export class AppGateway implements OnGatewayDisconnect {
 
     @SubscribeMessage(ClientEvent.CLICK_ON_CELL)
     clickOnCell(client: Socket, cell: Cell): void {
-        this.logger.log(`clickOnCell: ${client.id} ${cell}`);
+        //this.logger.log(`clickOnCell: ${client.id} ${cell}`);
         const player = this.playersService.getPlayerByWsId(client.id);
-        player.x0 = player.x1;
-        player.y0 = player.y1;
-        const dx = Math.sign(player.x1 - cell.x);
-        const dy = Math.sign(player.y1 - cell.y);
-        player.x1 -= dx;
-        player.y1 -= dy;
-        player.a0 = player.a1;
-        if (dx * dx + dy * dy !== 0)
-            player.a1 = Math.atan2(-dx, -dy);
+        this.playersService.calcMove(player, cell);
+        player.h1 = this.mapService.getCellHeight(cell);
         this.server.emit(ServerEvent.PLAYER_MOVED, player)
     }
 
