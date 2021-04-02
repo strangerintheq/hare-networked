@@ -7,6 +7,7 @@ export class PlayersService {
     private allPlayers = new Map<string, Player>();
     private connectedPlayers = new Map<string, Player>();
 
+
     playerConnected(id: string, wsId: string): Player {
         const connectedPlayer = this.allPlayers.has(id) ?
             this.allPlayers.get(id) : this.newPlayer(id);
@@ -21,6 +22,7 @@ export class PlayersService {
         player.id = id;
         player.x0 = player.x1 = (Math.random()*21)|0-10;
         player.y0 = player.y1 = (Math.random()*21)|0-10;
+        player.a0 = player.a1 = 0;
         return player;
     }
 

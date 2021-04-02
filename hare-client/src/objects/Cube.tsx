@@ -12,14 +12,17 @@ export interface CubeParams {
     rotation?: number[];
     scale?: number[];
     onClick?: (event: MouseEvent) => void;
+    noShadow?:boolean
 }
 
 export const Cube = (props: CubeParams) => <>
-    <mesh scale={props.scale||units}
+    <mesh castShadow={!props.noShadow}
+          receiveShadow={!props.noShadow}
+          scale={props.scale||units}
           onClick={props.onClick}
           rotation={props.rotation||zeroes}
           position={props.position||zeroes}>
         <boxGeometry args={props.size||units}/>
-        <meshLambertMaterial color={props.col}/>
+        <meshStandardMaterial  color={props.col}/>
     </mesh>
 </>

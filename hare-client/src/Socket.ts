@@ -21,23 +21,22 @@ Object.keys(ServerEvent).forEach(evt => {
     });
 });
 
-export const useServerEvent = (ev: ServerEvent, fn) => {
+export const useServerEvent = (ev: ServerEvent, fn, deps = []) => {
     useEffect(() => {
         const listener = e => {
           //  console.log('useServerEvent listener',ev, e.detail)
             fn(e.detail);
         };
-
-        console.log('add useServerEvent')
+        // console.log('add useServerEvent')
         bus.addEventListener(ev, listener);
         return () => {
-            console.log('remove useServerEvent')
+            // console.log('remove useServerEvent')
             bus.removeEventListener(ev, listener)
         };
-    }, [])
+    }, deps)
 }
 
 export function sendClientEvent(e:ClientEvent, arg){
     socket.emit(e, arg)
-    console.log('sendClientEvent', e, arg)
+    // console.log('sendClientEvent', e, arg)
 }
