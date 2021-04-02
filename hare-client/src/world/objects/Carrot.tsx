@@ -1,6 +1,6 @@
 import React from 'react';
 import {Cube} from "../Cube";
-import {green2, orange} from "../Palette";
+import {green2, orange} from "../../base/Palette";
 
 export const Carrot = () => {
     return <group position={[0,0.5, 0]}>

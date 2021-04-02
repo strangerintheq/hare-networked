@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Color} from "react-three-fiber";
 import {MouseEvent} from "react-three-fiber/canvas";
+import {Ref} from "react";
 
 const zeroes = [0,0,0];
 const units = [1,1,1];
@@ -16,7 +17,7 @@ export interface CubeParams {
     noCastShadow?:boolean;
 }
 
-export const Cube = (props: CubeParams) => {
+export const Cube = React.forwardRef((props: CubeParams, ref:Ref) => {
     let castShadow = true;
     if (!props.noShadow && !props.noCastShadow)
         castShadow = true
@@ -25,8 +26,7 @@ export const Cube = (props: CubeParams) => {
     else if (!props.noCastShadow)
         castShadow = false
 
-    return <>
-        <mesh castShadow={castShadow}
+    return <mesh ref={ref} castShadow={castShadow}
               receiveShadow={!props.noShadow}
               scale={props.scale || units}
               onClick={props.onClick}
@@ -35,5 +35,5 @@ export const Cube = (props: CubeParams) => {
             <boxGeometry args={props.size || units}/>
             <meshStandardMaterial color={props.col}/>
         </mesh>
-    </>;
-}
+    ;
+})

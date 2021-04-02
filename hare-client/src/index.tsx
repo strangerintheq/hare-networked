@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {App} from "./App";
+import {App} from "./base/App";
 
 const target = document.createElement('div')
 document.body.append(target);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Cube} from "../Cube";
-import {blue2} from "../Palette";
+import {blue2} from "../../base/Palette";
 
 
 export const Ocean = () => {

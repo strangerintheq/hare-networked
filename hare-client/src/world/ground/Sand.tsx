@@ -1,5 +1,5 @@
 import React from 'react';
-import {yellow} from "../Palette";
+import {yellow} from "../../base/Palette";
 import {Cube} from "../Cube";
 
 

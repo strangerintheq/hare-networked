@@ -1,6 +1,6 @@
 import React from 'react';
 import {Cube} from "../Cube";
-import {brown1, green, green2} from "../Palette";
+import {brown1, green, green2} from "../../base/Palette";
 
 export const Tree1 = () => {
     let p = [0,2,0];

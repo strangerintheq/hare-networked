@@ -1,6 +1,6 @@
-import {ServerEvent} from "../../hare-server/src/data/ServerEvent";
+import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
 import {useEffect} from "react";
-import {ClientEvent} from "../../hare-server/src/data/ClientEvent";
+import {ClientEvent} from "../../../hare-server/src/data/ClientEvent";
 
 const clientId = 'hare-client-id';
 let id = localStorage.getItem(clientId);

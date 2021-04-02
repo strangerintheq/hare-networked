@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
 import {Canvas} from "react-three-fiber";
-import {World} from "./world/World";
+import {World} from "../world/World";
 import {PlayerObj} from "./PlayerObj";
-import {Atmosphere} from "./world/Atmosphere";
-import {Cell} from "../../hare-server/src/data/Cell";
-import {Player} from "../../hare-server/src/data/Player";
-import {ServerEvent} from "../../hare-server/src/data/ServerEvent";
+import {Atmosphere} from "../world/Atmosphere";
+import {Cell} from "../../../hare-server/src/data/Cell";
+import {Player} from "../../../hare-server/src/data/Player";
+import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
 import {sendClientEvent, useServerEvent} from "./Socket";
-import {ClientEvent} from "../../hare-server/dist/data/ClientEvent";
+import {ClientEvent} from "../../../hare-server/dist/data/ClientEvent";
 import {Background} from "./Background";
+import {DialogCloud} from "./DialogCloud";
 
 export const App = () => {
 
@@ -56,6 +57,6 @@ export const App = () => {
         <Atmosphere/>
         <World cells={cells} onClick={onClick}/>
         {players.map(p => <PlayerObj key={p.id} p={p} />)}
-
+        <DialogCloud/>
     </Canvas>
 };

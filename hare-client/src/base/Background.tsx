@@ -1,9 +1,9 @@
 import * as React from "react";
 
 //@ts-ignore
-import vertexShader from "./shaders/default.vertex.glsl";
+import vertexShader from "../shaders/default.vertex.glsl";
 //@ts-ignore
-import fragmentShader from "./shaders/bg.fragment.glsl";
+import fragmentShader from "../shaders/bg.fragment.glsl";
 
 let uf = {
     time: 0,

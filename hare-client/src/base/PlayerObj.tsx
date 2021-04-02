@@ -1,10 +1,10 @@
 import * as React from "react";
 import {CanvasContext, useFrame} from "react-three-fiber";
 import {useServerEvent} from "./Socket";
-import {ServerEvent} from "../../hare-server/src/data/ServerEvent";
-import {Player} from "../../hare-server/src/data/Player";
+import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
+import {Player} from "../../../hare-server/src/data/Player";
 import {useRef, useState} from "react";
-import {Hare} from "./world/animals/Hare";
+import {Hare} from "../world/animals/Hare";
 import {angleLerp, clamp, lerp} from "./Math";
 
 export const PlayerObj = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Cube} from "../Cube";
-import {green2} from "../Palette";
+import {green2} from "../../base/Palette";
 
 export const Bush1 = () => {
     return <group position={[0,1,0]}>
