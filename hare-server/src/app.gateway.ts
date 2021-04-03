@@ -46,6 +46,8 @@ export class AppGateway implements OnGatewayDisconnect {
         let nextCell = this.playersService.calcMove(player, cell);
         nextCell = this.mapService.getCell(nextCell.x, nextCell.y,0,0)
         player.h1 = this.mapService.getCellHeight(nextCell);
+        if (nextCell.isWater())
+            player.h1 -= 0.4
         player.animation = nextCell.getCellAnimation();
         this.server.emit(ServerEvent.PLAYER_MOVED, player)
     }
