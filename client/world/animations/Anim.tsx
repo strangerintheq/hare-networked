@@ -1,7 +1,8 @@
 import * as React from "react";
 import {AnimationState} from "../../base/AnimationState";
-import {AnimationType} from "../../../../hare-server/dist/data/AnimationType";
+
 import {WaterSplashAnimation} from "./WaterSplashAnimation";
+import {AnimationType} from "../../../src/data/AnimationType";
 
 type AnimParams = {
     animation: AnimationState,

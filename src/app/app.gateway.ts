@@ -2,13 +2,13 @@ import {OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer
 
 import {Logger} from '@nestjs/common';
 import {Server, Socket} from 'socket.io';
-import {MapService} from "./services/map.service";
-import {PlayersService} from "./services/players.service";
-import {ServerEvent} from "./data/ServerEvent";
-import {ClientEvent} from "./data/ClientEvent";
-import {Cell} from "./data/Cell";
-import {CellObjectType} from "./data/CellObjectType";
-import {ActionType} from "./data/ActionType";
+import {MapService} from "../services/map.service";
+import {PlayersService} from "../services/players.service";
+import {ServerEvent} from "../data/ServerEvent";
+import {ClientEvent} from "../data/ClientEvent";
+import {Cell} from "../data/Cell";
+import {CellObjectType} from "../data/CellObjectType";
+import {ActionType} from "../data/ActionType";
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayDisconnect {

@@ -3,16 +3,16 @@ import {Canvas} from "react-three-fiber";
 import {World} from "../world/World";
 import {PlayerObj} from "./PlayerObj";
 import {Atmosphere} from "../world/Atmosphere";
-import {Cell} from "../../../hare-server/src/data/Cell";
-import {Player} from "../../../hare-server/src/data/Player";
-import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
+import {Cell} from "../../src/data/Cell";
+import {Player} from "../../src/data/Player";
+import {ServerEvent} from "../../src/data/ServerEvent";
 import {clientId, sendClientEvent, useServerEvent} from "./Socket";
-import {ClientEvent} from "../../../hare-server/src/data/ClientEvent";
+import {ClientEvent} from "../../src/data/ClientEvent";
 import {Background} from "./Background";
 import {DialogCloud} from "./DialogCloud";
 import {AnimationState} from "./AnimationState";
 import {Anim} from "../world/animations/Anim";
-import {AnimationType} from "../../../hare-server/src/data/AnimationType";
+import {AnimationType} from "../../src/data/AnimationType";
 import {DialogCloudState} from "./DialogCloudState";
 
 export const App = () => {

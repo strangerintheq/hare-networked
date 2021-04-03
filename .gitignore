@@ -1,5 +1,5 @@
-hare-server/dist
-hare-client/build/index.js
+dist
+static/index.js
 .idea
 **/node_modules/
 *.js

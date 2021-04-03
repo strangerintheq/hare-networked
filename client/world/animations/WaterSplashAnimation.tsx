@@ -1,12 +1,12 @@
 import * as React from "react";
 import {useRef} from "react";
-import {Player} from "../../../../hare-server/dist/data/Player";
 import {CanvasContext, useFrame} from "react-three-fiber";
 import {Cube} from "../Cube";
 
 import { blue11} from "../../base/Palette";
 import {clamp, oneMinusParabola, pow} from "../../base/Math";
-import {AnimationType} from "../../../../hare-server/src/data/AnimationType";
+import {AnimationType} from "../../../src/data/AnimationType";
+import {Player} from "../../../src/data/Player";
 
 export const WaterSplashAnimation = (props:{player:Player}) => {
 
@@ -16,6 +16,7 @@ export const WaterSplashAnimation = (props:{player:Player}) => {
         let o = ref.current;
         if (!o) return;
         if (props.player.animation === AnimationType.WATER_SPLASH) {
+            //@ts-ignore
             let dt = clamp((Date.now()-props.player.t-75)/500);
             let f = oneMinusParabola(dt*2 - 1)
             let c = dt*3;

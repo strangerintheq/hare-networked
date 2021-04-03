@@ -1,5 +1,5 @@
 import React from 'react';
-import {Cell} from "../../../hare-server/src/data/Cell";
+import {Cell} from "../../src/data/Cell";
 import {GroundCell} from "./ground/GroundCell";
 import {CellObject} from "./objects/CellObject";
 
