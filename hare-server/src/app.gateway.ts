@@ -24,14 +24,14 @@ export class AppGateway implements OnGatewayDisconnect {
     ) {}
 
     handleDisconnect(client: Socket) {
-        //this.logger.log(`Client disconnected: ${client.id}`);
+        //this.logger.log(`Client disconnected: ${client.clientId}`);
         const id = this.playersService.playerDisconnected(client.id);
         this.server.emit(ServerEvent.PLAYER_DISCONNECTED, id);
     }
 
     @SubscribeMessage(ClientEvent.JOIN)
     joinMsg(client: Socket, id: string): void {
-        //this.logger.log(`joinMsg: ${client.id} ${id}`);
+        //this.logger.log(`joinMsg: ${client.clientId} ${clientId}`);
         const player = this.playersService.playerConnected(id, client.id)
         const sector = this.mapService.getSector(0, 0);
         const players = this.playersService.getPlayersInSector(0, 0);
@@ -41,7 +41,7 @@ export class AppGateway implements OnGatewayDisconnect {
 
     @SubscribeMessage(ClientEvent.CLICK_ON_CELL)
     clickOnCell(client: Socket, cell: Cell): void {
-        //this.logger.log(`clickOnCell: ${client.id} ${cell}`);
+        //this.logger.log(`clickOnCell: ${client.clientId} ${cell}`);
         const player = this.playersService.getPlayerByWsId(client.id);
         let nextCell = this.playersService.calcMove(player, cell);
         nextCell = this.mapService.getCell(nextCell.x, nextCell.y,0,0)

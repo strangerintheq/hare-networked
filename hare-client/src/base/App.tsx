@@ -6,7 +6,7 @@ import {Atmosphere} from "../world/Atmosphere";
 import {Cell} from "../../../hare-server/src/data/Cell";
 import {Player} from "../../../hare-server/src/data/Player";
 import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
-import {sendClientEvent, useServerEvent} from "./Socket";
+import {clientId, sendClientEvent, useServerEvent} from "./Socket";
 import {ClientEvent} from "../../../hare-server/src/data/ClientEvent";
 import {Background} from "./Background";
 import {DialogCloud} from "./DialogCloud";
@@ -58,7 +58,8 @@ export const App = () => {
         setPlayers(players.map(p => player.id === p.id ? player : p));
         if (player.animation === AnimationType.WATER_SPLASH)
             addAnimation(new AnimationState(AnimationType.WATER_SPLASH, player),  player.t);
-        setCloudDialog(player.action && new DialogCloudState(player.action, player))
+        if (player.id === clientId)
+            setCloudDialog(player.action && new DialogCloudState(player.action, player))
     }, [players, animations]);
 
     const onClick = (e) => {

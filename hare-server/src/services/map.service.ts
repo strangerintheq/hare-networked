@@ -7,7 +7,7 @@ import {CellObjectType} from "../data/CellObjectType";
 @Injectable()
 export class MapService {
 
-    seed = 'seed';
+    seed = '1';
    // cells = new Map<string, Cell>();
     noises = new Map<string, SimplexNoise>();
 

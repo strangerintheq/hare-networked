@@ -4,6 +4,7 @@ import {white} from "./Palette";
 import {useRef} from "react";
 import {useFrame} from "react-three-fiber";
 import {DialogCloudState} from "./DialogCloudState";
+import {clamp} from "./Math";
 
 type DialogCloudParams = {
     params: DialogCloudState
@@ -19,14 +20,16 @@ export const DialogCloud = (props: DialogCloudParams) => {
         if (!ref3.current)
             return
 
-        const dt = c.clock.elapsedTime
-        let t1 = Math.min(dt*10,1);
+        const dt = clamp((Date.now()-props.params.player.t-200)/1000)
+        let t1 = Math.min(dt*5,1);
 
         let y1 = Math.sin(dt*1.3)*0.1;
         ref1.current.position.set(0,y1*t1,0)
+        ref1.current.scale.set(0.1*t1,0.1*t1,0.05);
 
         let y2 = Math.sin(dt*1.2)*0.1+0.3;
         ref2.current.position.set(0,y2*t1,0);
+        ref2.current.scale.set(0.3*t1,0.3*t1,0.05);
 
         let y3 = Math.sin(dt*1.1)*0.1+1.2;
         let x3 = Math.sin(dt*0.8)*0.05+0.3;
@@ -42,10 +45,10 @@ export const DialogCloud = (props: DialogCloudParams) => {
         return  <></>
 
     let p = props.params.player;
-    return <group position={[p.x1,2.5,p.y1]} rotation={[0,0.5, 0]}>
-        <Cube ref={ref1} col={white} scale={[0.1,0.1,0.05]}/>
-        <Cube ref={ref2} col={white} scale={[0.3,0.3,0.05]}/>
-        <Cube ref={ref3} col={white} scale={[2,2,0.05]}/>
+    return <group position={[p.x1,3,p.y1]} rotation={[0,0.5, 0]}>
+        <Cube ref={ref1} col={white} />
+        <Cube ref={ref2} col={white} />
+        <Cube ref={ref3} col={white} />
 
     </group>;
 };
