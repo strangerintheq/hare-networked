@@ -1,17 +1,14 @@
-import {
-    SubscribeMessage,
-    WebSocketGateway,
-    WebSocketServer,
-    OnGatewayDisconnect,
-} from '@nestjs/websockets';
+import {OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer,} from '@nestjs/websockets';
 
-import { Logger } from '@nestjs/common';
-import { Socket, Server } from 'socket.io';
+import {Logger} from '@nestjs/common';
+import {Server, Socket} from 'socket.io';
 import {MapService} from "./services/map.service";
 import {PlayersService} from "./services/players.service";
 import {ServerEvent} from "./data/ServerEvent";
 import {ClientEvent} from "./data/ClientEvent";
 import {Cell} from "./data/Cell";
+import {AnimationType} from "./data/AnimationType";
+import {CellType} from "./data/CellType";
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayDisconnect {
@@ -46,8 +43,10 @@ export class AppGateway implements OnGatewayDisconnect {
     clickOnCell(client: Socket, cell: Cell): void {
         //this.logger.log(`clickOnCell: ${client.id} ${cell}`);
         const player = this.playersService.getPlayerByWsId(client.id);
-        this.playersService.calcMove(player, cell);
-        player.h1 = this.mapService.getCellHeight(cell);
+        let nextCell = this.playersService.calcMove(player, cell);
+        nextCell = this.mapService.getCell(nextCell.x, nextCell.y,0,0)
+        player.h1 = this.mapService.getCellHeight(nextCell);
+        player.animation = nextCell.getCellAnimation();
         this.server.emit(ServerEvent.PLAYER_MOVED, player)
     }
 

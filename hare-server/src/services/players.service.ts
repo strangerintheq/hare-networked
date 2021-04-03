@@ -8,7 +8,6 @@ export class PlayersService {
     private allPlayers = new Map<string, Player>();
     private connectedPlayers = new Map<string, Player>();
 
-
     playerConnected(id: string, wsId: string): Player {
         const connectedPlayer = this.allPlayers.has(id) ?
             this.allPlayers.get(id) : this.newPlayer(id);
@@ -44,7 +43,7 @@ export class PlayersService {
         return this.connectedPlayers.get(wsId)
     }
 
-    calcMove(player: Player, cell: Cell) {
+    calcMove(player: Player, cell: Cell): Cell {
         player.x0 = player.x1;
         const dx = Math.sign(player.x1 - cell.x);
         player.x1 -= dx;
@@ -58,5 +57,9 @@ export class PlayersService {
             player.a1 = Math.atan2(-dx, -dy);
 
         player.h0 = player.h1;
+
+        const nextCell = new Cell(cell.x+dx, cell.y+dy,0,0)
+
+        return nextCell;
     }
 }

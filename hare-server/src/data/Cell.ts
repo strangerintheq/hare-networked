@@ -1,5 +1,6 @@
 import {CellType} from "./CellType";
 import {CellObjectType} from "./CellObjectType";
+import {AnimationType} from "./AnimationType";
 
 export class Cell {
 
@@ -33,5 +34,11 @@ export class Cell {
 
     getId() {
         return this.getX() + ':' + this.getY();
+    }
+
+    getCellAnimation() : AnimationType {
+        if (this.isWater())
+            return AnimationType.WATER_SPLASH;
+        return AnimationType.NONE;
     }
 }

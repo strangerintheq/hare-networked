@@ -14,6 +14,14 @@ export function clamp(x) {
     return Math.max(0, Math.min(1, x));
 }
 
+export function pow(x,y){
+    return Math.pow(x,y)
+}
+
+export function oneMinusParabola(x){
+    return 1 - pow(x,2);
+}
+
 
 
 

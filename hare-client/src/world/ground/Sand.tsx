@@ -5,6 +5,6 @@ import {Cube} from "../Cube";
 
 export const Sand = () => {
     return <>
-        <Cube col={yellow} noCastShadow={true} />
+        <Cube col={yellow} />
     </>
 }

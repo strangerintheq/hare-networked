@@ -21,7 +21,7 @@ export class MapService {
         });
     }
 
-    private getCell(x: number, y: number, sx: number, sy: number): Cell {
+    getCell(x: number, y: number, sx: number, sy: number): Cell {
         const cell = new Cell(x, y, sx, sy);
         cell.height = this.getCellHeight(cell);
         cell.type = this.getCellTypeByHeight(cell.height);
@@ -60,5 +60,10 @@ export class MapService {
         h = Math.floor(h * 10) / 10
         if (h < 0) h -= 0.15
         return h;
+    }
+
+    getCellAnimation() {
+
+        return undefined;
     }
 }

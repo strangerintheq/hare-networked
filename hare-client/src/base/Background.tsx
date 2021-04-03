@@ -10,7 +10,7 @@ let uf = {
 };
 
 export const Background = () => <mesh position={[-12,-12,-12]} rotation={[0,Math.PI/4,0]}>
-    <planeGeometry args={[35,35]}/>
+    <planeGeometry args={[40,40]}/>
     <shaderMaterial attach="material"
                     uniforms={uf}
                     fragmentShader={fragmentShader}

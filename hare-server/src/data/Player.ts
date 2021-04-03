@@ -1,3 +1,5 @@
+import {AnimationType} from "./AnimationType";
+
 export class Player {
     wsId: string;
     id: string;
@@ -12,4 +14,6 @@ export class Player {
     h1: number;
     y1: number;
     a1: number;
+
+    animation: AnimationType = AnimationType.NONE;
 }

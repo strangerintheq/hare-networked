@@ -7,14 +7,25 @@ import {Cell} from "../../../hare-server/src/data/Cell";
 import {Player} from "../../../hare-server/src/data/Player";
 import {ServerEvent} from "../../../hare-server/src/data/ServerEvent";
 import {sendClientEvent, useServerEvent} from "./Socket";
-import {ClientEvent} from "../../../hare-server/dist/data/ClientEvent";
+import {ClientEvent} from "../../../hare-server/src/data/ClientEvent";
 import {Background} from "./Background";
 import {DialogCloud} from "./DialogCloud";
+import {AnimationState} from "./AnimationState";
+import {Anim} from "../world/animations/Anim";
+import {AnimationType} from "../../../hare-server/src/data/AnimationType";
 
 export const App = () => {
 
+    const [animations, setAnimations] = useState<AnimationState[]>([]);
     const [players, setPlayers] = useState<Player[]>([]);
     const [cells, setCells] = useState<Cell[]>([]);
+
+    function addAnimation(a: AnimationState, t: number) {
+        const inPlaying = animations.filter((a:AnimationState) => {
+            return  t - a.player.t < 1000
+        });
+        setAnimations([...inPlaying, a]);
+    }
 
     useServerEvent(ServerEvent.PLAYER_CONNECTED, (player: Player) => {
         player.t = Date.now();
@@ -40,6 +51,14 @@ export const App = () => {
         }));
     });
 
+    useServerEvent(ServerEvent.PLAYER_MOVED, (player: Player) => {
+        player.t = Date.now();
+        setPlayers(players.map(p => player.id === p.id ? player : p));
+        if (player.animation === AnimationType.WATER_SPLASH) {
+            addAnimation(new AnimationState(AnimationType.WATER_SPLASH, player),  player.t);
+        }
+    }, [players, animations]);
+
     const onClick = (e) => {
         e.stopPropagation();
         const p = e.object.parent.position;
@@ -52,11 +71,11 @@ export const App = () => {
                    camera={{zoom: 50, position: [15, 15, 15]}}
                    style={{height: '100vh', width: '100vw'}}>
 
-
         <Background />
-        <Atmosphere/>
-        <World cells={cells} onClick={onClick}/>
+        <Atmosphere />
+        <World cells={cells} onClick={onClick} />
         {players.map(p => <PlayerObj key={p.id} p={p} />)}
-        <DialogCloud/>
+        {animations.map(anim=> <Anim animation={anim} key={anim.id} />)}
+        <DialogCloud />
     </Canvas>
 };
