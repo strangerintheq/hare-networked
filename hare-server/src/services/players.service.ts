@@ -2,6 +2,10 @@ import {Injectable} from '@nestjs/common';
 import {Player} from "../data/Player";
 import {Cell} from "../data/Cell";
 
+function rndCrd() {
+    return ((Math.random()*21)|0)-10;
+}
+
 @Injectable()
 export class PlayersService {
 
@@ -20,8 +24,8 @@ export class PlayersService {
     newPlayer(id: string) {
         let player = new Player();
         player.id = id;
-        player.x0 = player.x1 = (Math.random()*21)|0-10;
-        player.y0 = player.y1 = (Math.random()*21)|0-10;
+        player.x0 = player.x1 = rndCrd();
+        player.y0 = player.y1 = rndCrd();
         player.a0 = player.a1 = 0;
         return player;
     }
@@ -58,7 +62,7 @@ export class PlayersService {
 
         player.h0 = player.h1;
 
-        const nextCell = new Cell(cell.x+dx, cell.y+dy,0,0)
+        const nextCell = new Cell(player.x1, player.y1,0,0)
 
         return nextCell;
     }

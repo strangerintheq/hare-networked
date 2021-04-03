@@ -7,8 +7,8 @@ import {PlayersService} from "./services/players.service";
 import {ServerEvent} from "./data/ServerEvent";
 import {ClientEvent} from "./data/ClientEvent";
 import {Cell} from "./data/Cell";
-import {AnimationType} from "./data/AnimationType";
-import {CellType} from "./data/CellType";
+import {CellObjectType} from "./data/CellObjectType";
+import {ActionType} from "./data/ActionType";
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayDisconnect {
@@ -45,7 +45,8 @@ export class AppGateway implements OnGatewayDisconnect {
         const player = this.playersService.getPlayerByWsId(client.id);
         let nextCell = this.playersService.calcMove(player, cell);
         nextCell = this.mapService.getCell(nextCell.x, nextCell.y,0,0)
-        player.h1 = this.mapService.getCellHeight(nextCell);
+        player.h1 = nextCell.height;
+        player.action = nextCell.object === CellObjectType.CARROT ? ActionType.CARROT : undefined
         if (nextCell.isWater())
             player.h1 -= 0.4
         player.animation = nextCell.getCellAnimation();

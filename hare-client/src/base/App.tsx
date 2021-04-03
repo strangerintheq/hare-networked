@@ -13,12 +13,14 @@ import {DialogCloud} from "./DialogCloud";
 import {AnimationState} from "./AnimationState";
 import {Anim} from "../world/animations/Anim";
 import {AnimationType} from "../../../hare-server/src/data/AnimationType";
+import {DialogCloudState} from "./DialogCloudState";
 
 export const App = () => {
 
     const [animations, setAnimations] = useState<AnimationState[]>([]);
     const [players, setPlayers] = useState<Player[]>([]);
     const [cells, setCells] = useState<Cell[]>([]);
+    const [cloudDialog, setCloudDialog] = useState(undefined);
 
     function addAnimation(a: AnimationState, t: number) {
         const inPlaying = animations.filter((a:AnimationState) => {
@@ -54,9 +56,9 @@ export const App = () => {
     useServerEvent(ServerEvent.PLAYER_MOVED, (player: Player) => {
         player.t = Date.now();
         setPlayers(players.map(p => player.id === p.id ? player : p));
-        if (player.animation === AnimationType.WATER_SPLASH) {
+        if (player.animation === AnimationType.WATER_SPLASH)
             addAnimation(new AnimationState(AnimationType.WATER_SPLASH, player),  player.t);
-        }
+        setCloudDialog(player.action && new DialogCloudState(player.action, player))
     }, [players, animations]);
 
     const onClick = (e) => {
@@ -76,6 +78,6 @@ export const App = () => {
         <World cells={cells} onClick={onClick} />
         {players.map(p => <PlayerObj key={p.id} p={p} />)}
         {animations.map(anim=> <Anim animation={anim} key={anim.id} />)}
-        <DialogCloud />
+        <DialogCloud params={cloudDialog}/>
     </Canvas>
 };

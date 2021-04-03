@@ -3,14 +3,21 @@ import {Cube} from "../world/Cube";
 import {white} from "./Palette";
 import {useRef} from "react";
 import {useFrame} from "react-three-fiber";
+import {DialogCloudState} from "./DialogCloudState";
 
-export const DialogCloud = () => {
+type DialogCloudParams = {
+    params: DialogCloudState
+};
+
+export const DialogCloud = (props: DialogCloudParams) => {
 
     const ref1 = useRef();
     const ref2 = useRef();
     const ref3 = useRef();
 
     useFrame((c) => {
+        if (!ref3.current)
+            return
 
         const dt = c.clock.elapsedTime
         let t1 = Math.min(dt*10,1);
@@ -30,7 +37,12 @@ export const DialogCloud = () => {
 
     })
 
-    return <group position={[0,2.5,0]} rotation={[0,0.5, 0]}>
+
+    if (!props.params)
+        return  <></>
+
+    let p = props.params.player;
+    return <group position={[p.x1,2.5,p.y1]} rotation={[0,0.5, 0]}>
         <Cube ref={ref1} col={white} scale={[0.1,0.1,0.05]}/>
         <Cube ref={ref2} col={white} scale={[0.3,0.3,0.05]}/>
         <Cube ref={ref3} col={white} scale={[2,2,0.05]}/>

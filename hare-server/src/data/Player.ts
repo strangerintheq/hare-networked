@@ -1,4 +1,5 @@
 import {AnimationType} from "./AnimationType";
+import {ActionType} from "./ActionType";
 
 export class Player {
     wsId: string;
@@ -16,4 +17,5 @@ export class Player {
     a1: number;
 
     animation: AnimationType = AnimationType.NONE;
+    action: ActionType;
 }
