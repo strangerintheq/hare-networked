@@ -55,8 +55,8 @@ export class MapService {
     }
 
     getCellHeight(c: Cell) {
-        let h = this.noise('terrain1', c.x / 40, c.y / 40) * 0.8;
-        h += this.noise('terrain2', c.x / 10, c.y / 10) * 0.2;
+        let h = this.noise('terrain1', c.getX() / 40, c.getY() / 40) * 0.8;
+        h += this.noise('terrain2', c.getX() / 10, c.getY() / 10) * 0.2;
         h = Math.floor(h * 10) / 10
         if (h < 0) h -= 0.15
         return h;

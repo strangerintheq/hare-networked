@@ -28,7 +28,7 @@ export const Atmosphere = () => {
             shadow-camera-right={11}
             shadow-camera-top={11}
             shadow-camera-bottom={-11}
-            intensity={0.4}/>
+            intensity={0.6}/>
 
         <directionalLight
             ref={ref2}

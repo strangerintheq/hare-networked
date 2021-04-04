@@ -9,6 +9,7 @@ import {ClientEvent} from "../../data/ClientEvent";
 import {Cell} from "../../data/Cell";
 import {CellObjectType} from "../../data/CellObjectType";
 import {ActionType} from "../../data/ActionType";
+import {Player} from "../../data/Player";
 
 @WebSocketGateway()
 export class AppGateway implements OnGatewayDisconnect {
@@ -26,31 +27,47 @@ export class AppGateway implements OnGatewayDisconnect {
     handleDisconnect(client: Socket) {
         //this.logger.log(`Client disconnected: ${client.clientId}`);
         const id = this.playersService.playerDisconnected(client.id);
-        this.server.emit(ServerEvent.PLAYER_DISCONNECTED, id);
+        this.server.emit(ServerEvent.PLAYER_EXITED_SECTOR, id);
     }
 
     @SubscribeMessage(ClientEvent.JOIN)
     joinMsg(client: Socket, id: string): void {
         //this.logger.log(`joinMsg: ${client.clientId} ${clientId}`);
         const player = this.playersService.playerConnected(id, client.id)
-        const sector = this.mapService.getSector(0, 0);
-        const players = this.playersService.getPlayersInSector(0, 0);
-        client.emit(ServerEvent.ENTER_SECTOR, {sector, players})
-        client.broadcast.emit(ServerEvent.PLAYER_CONNECTED, player);
+        this.enterSector(client, player);
+    }
+
+    enterSector(client: Socket, player: Player){
+        const sector = this.mapService.getSector(player.sx, player.sy);
+        const players = this.playersService.getPlayersInSector(player.sx, player.sy);
+        client.emit(ServerEvent.SECTOR_INIT_DATA, {sector, players})
+
+        const room = Player.roomKey(player);
+        client.join(room)
+        client.to(room).emit(ServerEvent.PLAYER_ENTERED_SECTOR, player);
     }
 
     @SubscribeMessage(ClientEvent.CLICK_ON_CELL)
-    clickOnCell(client: Socket, cell: Cell): void {
+    clickOnCell(client: Socket, clickedOnCell: Cell): void {
         //this.logger.log(`clickOnCell: ${client.clientId} ${cell}`);
         const player = this.playersService.getPlayerByWsId(client.id);
-        let nextCell = this.playersService.calcMove(player, cell);
-        nextCell = this.mapService.getCell(nextCell.x, nextCell.y,0,0)
+        let nextCell = this.playersService.calcMove(player, clickedOnCell);
+        nextCell = this.mapService.getCell(nextCell.x, nextCell.y,nextCell.sx,nextCell.sy)
         player.h1 = nextCell.height;
         player.action = nextCell.object === CellObjectType.CARROT ? ActionType.CARROT : undefined
         if (nextCell.isWater())
             player.h1 -= 0.4
-        player.animation = nextCell.getCellAnimation();
-        this.server.emit(ServerEvent.PLAYER_MOVED, player)
+        if (nextCell.sx !== clickedOnCell.sx || nextCell.sy !== clickedOnCell.sy) {
+            let roomKey = Player.roomKey(clickedOnCell);
+            client.to(roomKey).emit(ServerEvent.PLAYER_EXITED_SECTOR, player.id);
+            client.leave(roomKey)
+            this.enterSector(client, player);
+        } else {
+            player.animation = nextCell.getCellAnimation();
+            this.server.to(Player.roomKey(player))
+                .emit(ServerEvent.PLAYER_MOVED, player)
+        }
+
     }
 
     @SubscribeMessage(ClientEvent.INVOKE_CELL_ACTION)
@@ -59,3 +76,4 @@ export class AppGateway implements OnGatewayDisconnect {
         this.logger.log(cell)
     }
 }
+

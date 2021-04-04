@@ -16,6 +16,10 @@ import {AnimationType} from "../../data/AnimationType";
 import {DialogCloudState} from "./DialogCloudState";
 import {Canvas} from "@react-three/fiber";
 
+const style = {height: '100vh', width: '100vw'};
+const camera = {zoom: 50, position: [15, 15, 15]};
+
+
 export const App = () => {
 
     const [animations, setAnimations] = useState<AnimationState[]>([]);
@@ -30,24 +34,18 @@ export const App = () => {
         setAnimations([...inPlaying, a]);
     }
 
-    useServerEvent(ServerEvent.PLAYER_CONNECTED, (player: Player) => {
+    useServerEvent(ServerEvent.PLAYER_ENTERED_SECTOR, (player: Player) => {
         player.t = Date.now();
         setPlayers([...players, player]);
     }, [players]);
 
-    useServerEvent(ServerEvent.PLAYER_DISCONNECTED, (id) => {
+    useServerEvent(ServerEvent.PLAYER_EXITED_SECTOR, (id) => {
         setPlayers(players.filter(p => p.id !== id));
     }, [players]);
 
-    useServerEvent(ServerEvent.ENTER_SECTOR, ({sector, players}) => {
-        setCells(sector.flat().map(c => {
-            let cell = new Cell(c.x, c.y, c.sx, c.sy);
-            cell.height = c.height
-            cell.type = c.type
-            cell.object = c.object;
-            return cell;
-        }))
-        const d = Date.now()-1000;
+    useServerEvent(ServerEvent.SECTOR_INIT_DATA, ({sector, players}) => {
+        setCells(sector.flat().map(toCell))
+        const d = Date.now() - 1000;
         setPlayers(players.map(p => {
             p.t = d;
             return p
@@ -69,10 +67,9 @@ export const App = () => {
         sendClientEvent(ClientEvent.CLICK_ON_CELL, {x: p.x, y: p.z})
     };
 
-    return <Canvas orthographic shadows={true}
-                   camera={{zoom: 50, position: [15, 15, 15]}}
-                   style={{height: '100vh', width: '100vw'}}>
-
+    console.log(players)
+    //@ts-ignore
+    return <Canvas orthographic shadows={true} camera={camera} style={style}>
         <Background />
         <Atmosphere />
         <World cells={cells} onClick={onClick} />
@@ -81,3 +78,11 @@ export const App = () => {
         <DialogCloud params={cloudDialog}/>
     </Canvas>
 };
+
+function toCell(c:Cell){
+    let cell = new Cell(c.x, c.y, c.sx, c.sy);
+    cell.height = c.height
+    cell.type = c.type
+    cell.object = c.object;
+    return cell;
+}

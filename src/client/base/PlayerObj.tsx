@@ -3,6 +3,8 @@ import {useRef} from "react";
 import {angleLerp, clamp, lerp, now, pow} from "./Math";
 import {Frog} from "../world/animals/Frog";
 import {useFrame} from "@react-three/fiber";
+import {AnimalType} from "../../data/AnimalType";
+import {Hare} from "../world/animals/Hare";
 
 export const PlayerObj = (props) => {
 
@@ -21,8 +23,6 @@ export const PlayerObj = (props) => {
     });
 
     return <group ref={ref}>
-        {/*<Hare />*/}
-        <Frog/>
-
+        {props.p.animal === AnimalType.FROG ? <Frog/> : <Hare/>}
     </group>;
 }

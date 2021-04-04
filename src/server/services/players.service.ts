@@ -1,10 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {Player} from "../../data/Player";
 import {Cell} from "../../data/Cell";
-
-function rndCrd() {
-    return ((Math.random()*21)|0)-10;
-}
+import {AnimalType} from "../../data/AnimalType";
 
 @Injectable()
 export class PlayersService {
@@ -24,14 +21,17 @@ export class PlayersService {
     newPlayer(id: string) {
         let player = new Player();
         player.id = id;
-        player.x0 = player.x1 = rndCrd();
-        player.y0 = player.y1 = rndCrd();
+        player.sx = player.sy =
+        player.x0 = player.x1 =
+        player.y0 = player.y1 =
         player.a0 = player.a1 = 0;
+        player.animal = Math.random() > 0.5 ? AnimalType.HARE : AnimalType.FROG
         return player;
     }
 
     getPlayersInSector(sx: number, sy: number): Player[] {
-        return [...this.connectedPlayers.values()];
+        return [...this.connectedPlayers.values()]
+            .filter(p => sx === p.sx && sy===p.sy);
     }
 
     playerDisconnected(wsId: string): string | undefined {
@@ -62,8 +62,20 @@ export class PlayersService {
 
         player.h0 = player.h1;
 
-        const nextCell = new Cell(player.x1, player.y1,0,0)
+        cell.sx = player.sx;
+        cell.sy = player.sy
 
-        return nextCell;
+        player.sx += (player.x1/10)|0;
+        player.sy += (player.y1/10)|0;
+
+        let hs = (Cell.sectorSize-1)/2
+
+        if (Math.abs(player.x1) === hs)
+            player.x1 = -Math.sign(player.x1)*(hs-1)
+
+        if (Math.abs(player.y1) === hs)
+            player.y1 = -Math.sign(player.y1)*(hs-1)
+
+        return new Cell(player.x1, player.y1,player.sx,player.sy);
     }
 }

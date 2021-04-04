@@ -41,4 +41,5 @@ export class Cell {
             return AnimationType.WATER_SPLASH;
         return AnimationType.NONE;
     }
+
 }
