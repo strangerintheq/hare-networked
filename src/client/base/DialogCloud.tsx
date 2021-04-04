@@ -2,9 +2,9 @@ import * as React from "react";
 import {Cube} from "../world/Cube";
 import {white} from "./Palette";
 import {useRef} from "react";
-import {useFrame} from "react-three-fiber";
 import {DialogCloudState} from "./DialogCloudState";
 import {clamp} from "./Math";
+import {useFrame} from "@react-three/fiber";
 
 type DialogCloudParams = {
     params: DialogCloudState
@@ -16,7 +16,7 @@ export const DialogCloud = (props: DialogCloudParams) => {
     const ref2 = useRef();
     const ref3 = useRef();
 
-    useFrame((c) => {
+    useFrame(() => {
         if (!ref3.current)
             return
 

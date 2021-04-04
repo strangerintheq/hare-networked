@@ -1,7 +1,10 @@
 import * as React from "react";
-import {Color} from "react-three-fiber";
-import {MouseEvent} from "react-three-fiber/canvas";
+
 import {Ref} from "react";
+
+import {Color} from "@react-three/fiber";
+
+
 
 const zeroes = [0,0,0];
 const units = [1,1,1];
@@ -33,7 +36,7 @@ export const Cube = React.forwardRef((props: CubeParams, ref:Ref) => {
               rotation={props.rotation || zeroes}
               position={props.position || zeroes}>
             <boxGeometry args={props.size || units}/>
-            <meshStandardMaterial color={props.col}/>
+            <meshStandardMaterial color={props.col} metalness={0.1}/>
         </mesh>
     ;
 })

@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
-import {Player} from "../data/Player";
-import {Cell} from "../data/Cell";
+import {Player} from "../../data/Player";
+import {Cell} from "../../data/Cell";
 
 function rndCrd() {
     return ((Math.random()*21)|0)-10;

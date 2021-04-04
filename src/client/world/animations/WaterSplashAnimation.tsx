@@ -1,23 +1,24 @@
 import * as React from "react";
 import {useRef} from "react";
-import {CanvasContext, useFrame} from "react-three-fiber";
+
 import {Cube} from "../Cube";
 
 import { blue11} from "../../base/Palette";
-import {clamp, oneMinusParabola, pow} from "../../base/Math";
-import {AnimationType} from "../../../src/data/AnimationType";
-import {Player} from "../../../src/data/Player";
+import {clamp, now, oneMinusParabola} from "../../base/Math";
+import {AnimationType} from "../../../data/AnimationType";
+import {Player} from "../../../data/Player";
+import {useFrame} from "@react-three/fiber";
+import {RootState} from "@react-three/fiber/dist/declarations/src/core/store";
 
 export const WaterSplashAnimation = (props:{player:Player}) => {
 
     const ref = useRef();
 
-    useFrame((c:CanvasContext) => {
+    useFrame((c:RootState) => {
         let o = ref.current;
         if (!o) return;
         if (props.player.animation === AnimationType.WATER_SPLASH) {
-            //@ts-ignore
-            let dt = clamp((Date.now()-props.player.t-75)/500);
+            let dt = clamp((now()-props.player.t-75)/500);
             let f = oneMinusParabola(dt*2 - 1)
             let c = dt*3;
             ref.current.scale.set(c, 0.1, c);

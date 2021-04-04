@@ -5,10 +5,10 @@
   "author": "strangerintheq",
   "private": true,
   "scripts": {
-    "build-client": "esbuild client/index.tsx --bundle --outdir=static --loader:.glsl=text --define:process.env.NODE_ENV=\\\"development\\\"",
-    "prebuild": "rimraf dist",
-    "build-server": "nest build",
-    "start": "npm run build-server && npm run build-client && node dist/main",
+    "start": "npm run build-server && npm run build-client && npm run start:prod",
+    "build-client": "esbuild src/client/index.tsx --bundle --outdir=static --loader:.glsl=text --define:process.env.NODE_ENV=\\\"development\\\"",
+    "build-server": "rimraf dist && nest build",
+    "start:prod": "node dist/server/main",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch"
   },
@@ -20,17 +20,15 @@
     "@nestjs/platform-socket.io": "^7.6.15",
     "@nestjs/serve-static": "^2.1.4",
     "@nestjs/websockets": "^7.6.15",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6",
-    "simplex-noise": "^2.4.0",
+    "@react-three/drei": "^4.0.3",
+    "@react-three/fiber": "^6.0.7",
     "esbuild": "^0.8.21",
-    "drei": "^2.2.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-three-fiber": "^5.3.22",
-    "three": "^0.127.0",
-    "troika-three-text": "^0.40.0"
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "simplex-noise": "^2.4.0",
+    "three": "^0.127.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^7.3.0",

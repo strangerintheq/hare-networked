@@ -2,7 +2,7 @@ import * as React from "react";
 import {AnimationState} from "../../base/AnimationState";
 
 import {WaterSplashAnimation} from "./WaterSplashAnimation";
-import {AnimationType} from "../../../src/data/AnimationType";
+import {AnimationType} from "../../../data/AnimationType";
 
 type AnimParams = {
     animation: AnimationState,

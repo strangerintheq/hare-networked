@@ -1,5 +1,5 @@
-import {AnimationType} from "../../src/data/AnimationType";
-import {Player} from "../../src/data/Player";
+import {AnimationType} from "../../data/AnimationType";
+import {Player} from "../../data/Player";
 import {ActionType} from "../../dist/src/data/ActionType";
 
 

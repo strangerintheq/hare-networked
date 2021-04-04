@@ -1,12 +1,12 @@
 import React from 'react';
 
-import {Cell} from "../../../src/data/Cell";
+import {Cell} from "../../../data/Cell";
 import {Carrot} from "./Carrot";
 import {Bush1} from "./Bush1";
 import {Bush2} from "./Bush2";
 import {Tree2} from "./Tree2";
 import {Tree1} from "./Tree1";
-import {CellObjectType} from "../../../src/data/CellObjectType";
+import {CellObjectType} from "../../../data/CellObjectType";
 
 type CellObjectParams = {
     cell: Cell,

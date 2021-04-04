@@ -1,17 +1,21 @@
 import * as React from "react";
 import {useRef} from "react";
-import {CanvasContext, useFrame} from "react-three-fiber";
+import {useFrame} from "@react-three/fiber";
+import {RootState} from "@react-three/fiber/dist/declarations/src/core/store";
+
 
 export const Atmosphere = () => {
 
     const ref1 = useRef();
     const ref2 = useRef();
 
-    useFrame((c: CanvasContext) => {
-        let t1 = .9;//c.clock.elapsedTime / 1000 + 1
+    useFrame((c:RootState) => {
+        let t1 = 1;//c.clock.elapsedTime / 100 + 1
         let t2 = t1 + Math.PI;
-        ref1.current.position.set(0, Math.cos(t1) * 6, Math.sin(t1) *6)
-        ref2.current.position.set(0, Math.cos(t2) * 6, Math.sin(t2) * 6)
+        let cs1 = Math.cos(t1);
+        let cs2 = Math.cos(t2);
+        ref1.current.position.set(cs1 * 10, cs1 * 26, Math.sin(t1) * 26)
+        ref2.current.position.set(cs2 * 10, cs2 * 26, Math.sin(t2) * 26)
     })
 
     return <>

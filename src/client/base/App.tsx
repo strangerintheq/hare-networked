@@ -1,26 +1,27 @@
 import React, {useState} from 'react';
-import {Canvas} from "react-three-fiber";
+
 import {World} from "../world/World";
 import {PlayerObj} from "./PlayerObj";
 import {Atmosphere} from "../world/Atmosphere";
-import {Cell} from "../../src/data/Cell";
-import {Player} from "../../src/data/Player";
-import {ServerEvent} from "../../src/data/ServerEvent";
+import {Cell} from "../../data/Cell";
+import {Player} from "../../data/Player";
+import {ServerEvent} from "../../data/ServerEvent";
 import {clientId, sendClientEvent, useServerEvent} from "./Socket";
-import {ClientEvent} from "../../src/data/ClientEvent";
+import {ClientEvent} from "../../data/ClientEvent";
 import {Background} from "./Background";
 import {DialogCloud} from "./DialogCloud";
 import {AnimationState} from "./AnimationState";
 import {Anim} from "../world/animations/Anim";
-import {AnimationType} from "../../src/data/AnimationType";
+import {AnimationType} from "../../data/AnimationType";
 import {DialogCloudState} from "./DialogCloudState";
+import {Canvas} from "@react-three/fiber";
 
 export const App = () => {
 
     const [animations, setAnimations] = useState<AnimationState[]>([]);
     const [players, setPlayers] = useState<Player[]>([]);
     const [cells, setCells] = useState<Cell[]>([]);
-    const [cloudDialog, setCloudDialog] = useState(undefined);
+    const [cloudDialog, setCloudDialog] = useState<DialogCloudState|undefined>(undefined);
 
     function addAnimation(a: AnimationState, t: number) {
         const inPlaying = animations.filter((a:AnimationState) => {
@@ -68,9 +69,7 @@ export const App = () => {
         sendClientEvent(ClientEvent.CLICK_ON_CELL, {x: p.x, y: p.z})
     };
 
-    return <Canvas orthographic
-                   colorManagement
-                   shadowMap
+    return <Canvas orthographic shadows={true}
                    camera={{zoom: 50, position: [15, 15, 15]}}
                    style={{height: '100vh', width: '100vw'}}>
 

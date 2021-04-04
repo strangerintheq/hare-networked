@@ -1,7 +1,7 @@
 function hsl(h,s,l){
     return `hsl(${h},${s}%,${l}%)`
 }
-
+export const green4 = hsl(80, 50, 70);
 export const green = hsl(90, 50, 70);
 export const green2 = hsl(90, 50, 60);
 export const green3 = hsl(90, 50, 30);

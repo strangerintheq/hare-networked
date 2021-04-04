@@ -1,8 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import * as SimplexNoise from 'simplex-noise'
-import {Cell} from "../data/Cell";
-import {CellType} from "../data/CellType";
-import {CellObjectType} from "../data/CellObjectType";
+import {Cell} from "../../data/Cell";
+import {CellType} from "../../data/CellType";
+import {CellObjectType} from "../../data/CellObjectType";
 
 @Injectable()
 export class MapService {
